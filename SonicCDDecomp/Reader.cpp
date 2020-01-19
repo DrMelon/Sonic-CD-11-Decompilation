@@ -76,18 +76,7 @@ bool LoadFile(const char *filePath, FileInfo *fileInfo)
 
     cFileHandle = NULL;
 
-    bool fileOverride = false;
-
-    std::string filePathStr(filePath);
-    fileOverride |= (filePathStr.find("PlayerStart.txt", 0) != std::string::npos);
-    fileOverride |= (filePathStr.find("ActFinish.txt", 0) != std::string::npos);
-    fileOverride |= (filePathStr.find("StageFinish.txt", 0) != std::string::npos);
-    fileOverride |= (filePathStr.find("HUD.txt", 0) != std::string::npos);
-    fileOverride |= (filePathStr.find("TimeWarp.txt", 0) != std::string::npos);
-    fileOverride |= (filePathStr.find("MetalSonic.txt", 0) != std::string::npos);
-    fileOverride |= (filePathStr.find("StageSetup.txt", 0) != std::string::npos);
-    fileOverride |= (filePathStr.find("GolfMeterH.txt", 0) != std::string::npos);
-    fileOverride |= (filePathStr.find("GolfMeterPip.txt", 0) != std::string::npos);
+    bool fileOverride = Engine.ShouldOverrideFileLoad(filePath);
 
 
     if (Engine.usingDataFile && !fileOverride) {
@@ -318,12 +307,12 @@ bool ParseVirtualFileSystem(FileInfo *fileInfo)
     return false;
 }
 
-void FileRead(void *dest, int size)
+void FileRead(void *dest, int size, bool override)
 {
     byte *data = (byte *)dest;
 
     if (readPos <= fileSize) {
-        if (Engine.usingDataFile) {
+        if (Engine.usingDataFile && !override) {
             while (size > 0) {
                 if (bufferPosition == readSize)
                     FillFileBuffer();
@@ -373,9 +362,9 @@ void FileRead(void *dest, int size)
     }
 }
 
-void SetFileInfo(FileInfo *fileInfo)
+void SetFileInfo(FileInfo *fileInfo, bool override)
 {
-    if (Engine.usingDataFile) {
+    if (Engine.usingDataFile && !override) {
         cFileHandle       = fOpen(rsdkName, "rb");
         virtualFileOffset = fileInfo->virtualFileOffset;
         vFileSize         = fileInfo->fileSize;
@@ -406,17 +395,17 @@ void SetFileInfo(FileInfo *fileInfo)
     }
 }
 
-size_t GetFilePosition()
+size_t GetFilePosition(bool override)
 {
-    if (Engine.usingDataFile)
+    if (Engine.usingDataFile && !override)
         return bufferPosition + readPos - readSize - virtualFileOffset;
     else
         return bufferPosition + readPos - readSize;
 }
 
-void SetFilePosition(int newPos)
+void SetFilePosition(int newPos, bool override)
 {
-    if (Engine.usingDataFile) {
+    if (Engine.usingDataFile && !override) {
         readPos     = virtualFileOffset + newPos;
         eStringNo   = (vFileSize & 0x1FCu) >> 2;
         eStringPosB = (eStringNo % 9) + 1;
@@ -459,9 +448,9 @@ void SetFilePosition(int newPos)
     FillFileBuffer();
 }
 
-bool ReachedEndOfFile()
+bool ReachedEndOfFile(bool override)
 {
-    if (Engine.usingDataFile)
+    if (Engine.usingDataFile && !override)
         return bufferPosition + readPos - readSize - virtualFileOffset >= vFileSize;
     else
         return bufferPosition + readPos - readSize >= fileSize;

@@ -1454,6 +1454,7 @@ void ParseScriptFile(char *scriptName, int scriptID)
     StrCopy(scriptPath, "Data/Scripts/");
     StrAdd(scriptPath, scriptName);
     FileInfo info;
+    bool override = Engine.ShouldOverrideFileLoad(scriptPath);
     if (LoadFile(scriptPath, &info)) {
         printLog("Loaded script.");
         objectScriptList[scriptID].mobile = true; // all parsed scripts will use the updated format, old format support is purely for pc bytecode
@@ -1467,7 +1468,7 @@ void ParseScriptFile(char *scriptName, int scriptID)
             readMode    = READMODE_NORMAL;
             while (readMode < READMODE_ENDLINE) {
                 prevChar = curChar;
-                FileRead(&curChar, 1);
+                FileRead(&curChar, 1, override);
                 if (readMode == READMODE_STRING) {
                     if (curChar == '\t' || curChar == '\r' || curChar == '\n' || curChar == ';' || readMode >= READMODE_COMMENTLINE) {
                         if ((curChar == '\n' && prevChar != '\r') || (curChar == '\n' && prevChar == '\r')) {
@@ -1507,7 +1508,7 @@ void ParseScriptFile(char *scriptName, int scriptID)
                 else {
                     scriptText[textPos++] = curChar;
                 }
-                if (ReachedEndOfFile()) {
+                if (ReachedEndOfFile(override)) {
                     scriptText[textPos] = 0;
                     readMode            = READMODE_EOF;
                 }

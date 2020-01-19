@@ -76,7 +76,7 @@ inline bool CloseFile()
     return result;
 }
 
-void FileRead(void *dest, int size);
+void FileRead(void *dest, int size, bool override = false);
 
 bool ParseVirtualFileSystem(FileInfo *fileInfo);
 
@@ -105,10 +105,10 @@ inline void GetFileInfo(FileInfo *fileInfo)
     fileInfo->eStringNo      = eStringNo;
     fileInfo->eNybbleSwap    = eNybbleSwap;
 }
-void SetFileInfo(FileInfo *fileInfo);
-size_t GetFilePosition();
-void SetFilePosition(int newPos);
-bool ReachedEndOfFile();
+void SetFileInfo(FileInfo *fileInfo, bool override = false);
+size_t GetFilePosition(bool override = false);
+void SetFilePosition(int newPos, bool override = false);
+bool ReachedEndOfFile(bool override = false);
 
 
 size_t FileRead2(FileInfo *info, void *dest, int size); // For Music Streaming

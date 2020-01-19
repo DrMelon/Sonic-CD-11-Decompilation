@@ -425,13 +425,7 @@ void RetroEngine::Callback(int callbackID)
             printLog("Callback: Unknown (%d)", callbackID);
             break;
         case CALLBACK_DISPLAYLOGOS: // Display Logos, Called immediately
-            /*if (ActiveStageList) {
-                callbackMessage = 1;
-                GameMode        = 7;
-            }
-            else {
-                callbackMessage = 10;
-            }*/
+            gameMode        = ENGINE_MAINGAME;
             printLog("Callback: Display Logos");
             break;
         case CALLBACK_PRESS_START: // Called when "Press Start" is activated, PC = NONE
@@ -544,4 +538,38 @@ void RetroEngine::Callback(int callbackID)
             globalVariables[135] = 1;
             break;
     }
+
+    
+}
+
+bool RetroEngine::ShouldOverrideFileLoad(std::string context) 
+{ 
+    bool fileOverride = false;
+    printLog("Checking to see if we should override: %s", context.c_str());
+
+    false;
+
+    std::string filePathStr(context);
+    fileOverride |= (filePathStr.find("PlayerStart.txt", 0) != std::string::npos);
+    fileOverride |= (filePathStr.find("ActFinish.txt", 0) != std::string::npos);
+    fileOverride |= (filePathStr.find("StageFinish.txt", 0) != std::string::npos);
+    fileOverride |= (filePathStr.find("HUD.txt", 0) != std::string::npos);
+    fileOverride |= (filePathStr.find("TimeWarp.txt", 0) != std::string::npos);
+    fileOverride |= (filePathStr.find("MetalSonic.txt", 0) != std::string::npos);
+    fileOverride |= (filePathStr.find("StageSetup.txt", 0) != std::string::npos);
+    fileOverride |= (filePathStr.find("GolfMeterH.txt", 0) != std::string::npos);
+    fileOverride |= (filePathStr.find("GolfMeterPip.txt", 0) != std::string::npos);
+    fileOverride |= (filePathStr.find("Scripts", 0) != std::string::npos);
+
+    fileOverride |= (filePathStr.find("Title.gif", 0) != std::string::npos);
+    fileOverride |= (filePathStr.find("Display.gif", 0) != std::string::npos);
+
+    if (fileOverride) {
+        printLog("\t... Yep!");
+    }
+    else {
+        printLog("\t... Nope!");
+    }
+
+    return fileOverride;
 }

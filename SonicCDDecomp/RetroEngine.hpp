@@ -144,6 +144,7 @@ enum RetroBytecodeFormat {
 #include <vorbis/vorbisfile.h>
 #include <theora/theora.h>
 #include <theoraplay.h>
+#include <string>
 #elif RETRO_PLATFORM == RETRO_OSX
 #include <SDL2/SDL.h>
 #include <Vorbis/vorbisfile.h>
@@ -285,6 +286,8 @@ public:
 
     SDL_Event sdlEvents;
 #endif
+
+    bool ShouldOverrideFileLoad(std::string context);
 };
 
 extern RetroEngine Engine;

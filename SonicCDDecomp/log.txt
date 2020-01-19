@@ -1,0 +1,16 @@
+Overriding Data/Scripts/ByteCode/GlobalCode.bin with local file.
+Couldn't load file 'Data/Scripts/ByteCode/GlobalCode.bin'
+Overriding Data/Scripts/ByteCode/GS000.bin with local file.
+Couldn't load file 'Data/Scripts/ByteCode/GS000.bin'
+Couldn't load file 'Data/Game/GameConfig.bin'
+Checking to see if we should override: Data/Scripts/ByteCode/GlobalCode.bin
+	... Yep!
+Overriding Data/Scripts/ByteCode/GlobalCode.bin with local file.
+Couldn't load file 'Data/Scripts/ByteCode/GlobalCode.bin'
+Checking to see if we should override: Data/Scripts/ByteCode/GS000.bin
+	... Yep!
+Overriding Data/Scripts/ByteCode/GS000.bin with local file.
+Couldn't load file 'Data/Scripts/ByteCode/GS000.bin'
+Checking to see if we should override: Data/Game/GameConfig.bin
+	... Nope!
+Couldn't load file 'Data/Game/GameConfig.bin'

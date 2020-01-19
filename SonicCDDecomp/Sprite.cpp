@@ -32,14 +32,14 @@ const int NO_SUCH_CODE  = 4098;
 struct GifDecoder gifDecoder;
 int codeMasks[] = { 0, 1, 3, 7, 15, 31, 63, 127, 255, 511, 1023, 2047, 4095 };
 
-int ReadGifCode(void);
-byte ReadGifByte(void);
+int ReadGifCode(bool);
+byte ReadGifByte(bool);
 byte TraceGifPrefix(uint *prefix, int code, int clearCode);
 
-void InitGifDecoder()
+void InitGifDecoder(bool override)
 {
     int val = 0;
-    FileRead(&val, 1);
+    FileRead(&val, 1, override);
     gifDecoder.fileState      = LOADING_IMAGE;
     gifDecoder.position       = 0;
     gifDecoder.bufferSize     = 0;
@@ -56,7 +56,7 @@ void InitGifDecoder()
     gifDecoder.shiftData      = 0u;
     for (int i = 0; i <= LZ_MAX_CODE; ++i) gifDecoder.prefix[i] = (byte)NO_SUCH_CODE;
 }
-void ReadGifLine(byte *line, int length, int offset)
+void ReadGifLine(byte *line, int length, int offset, bool override)
 {
     int i         = 0;
     int stackPtr       = gifDecoder.stackPtr;
@@ -73,7 +73,7 @@ void ReadGifLine(byte *line, int length, int offset)
         }
     }
     while (i < length) {
-        int gifCode = ReadGifCode();
+        int gifCode = ReadGifCode(override);
         if (gifCode == eofCode) {
             if (i != length - 1 | gifDecoder.pixelCount != 0u) {
                 return;
@@ -145,10 +145,10 @@ void ReadGifLine(byte *line, int length, int offset)
     gifDecoder.stackPtr = stackPtr;
 }
 
-int ReadGifCode()
+int ReadGifCode(bool override)
 {
     while (gifDecoder.shiftState < gifDecoder.runningBits) {
-        byte b = ReadGifByte();
+        byte b = ReadGifByte(override);
         gifDecoder.shiftData |= (uint)((uint)b << gifDecoder.shiftState);
         gifDecoder.shiftState += 8;
     }
@@ -162,7 +162,7 @@ int ReadGifCode()
     return result;
 }
 
-byte ReadGifByte()
+byte ReadGifByte(bool override)
 {
     char c = '\0';
     if (gifDecoder.fileState == LOAD_COMPLETE)
@@ -170,13 +170,13 @@ byte ReadGifByte()
 
     byte b;
     if (gifDecoder.position == gifDecoder.bufferSize) {
-        FileRead(&b, 1);
+        FileRead(&b, 1, override);
         gifDecoder.bufferSize = (int)b;
         if (gifDecoder.bufferSize == 0) {
             gifDecoder.fileState = LOAD_COMPLETE;
             return c;
         }
-        FileRead(gifDecoder.buffer, gifDecoder.bufferSize);
+        FileRead(gifDecoder.buffer, gifDecoder.bufferSize, override);
         b                   = gifDecoder.buffer[0];
         gifDecoder.position = 1;
     }
@@ -193,20 +193,20 @@ byte TraceGifPrefix(uint *prefix, int code, int clearCode)
 
     return code;
 }
-void ReadGifPictureData(int width, int height, bool interlaced, byte *gfxData, int offset)
+void ReadGifPictureData(int width, int height, bool interlaced, byte *gfxData, int offset, bool override)
 {
     int array[]  = { 0, 4, 2, 1 };
     int array2[] = { 8, 8, 4, 2 };
-    InitGifDecoder();
+    InitGifDecoder(override);
     if (interlaced) {
         for (int i = 0; i < 4; ++i) {
             for (int j = array[i]; j < height; j += array2[i]) {
-                ReadGifLine(gfxData, width, j * width + offset);
+                ReadGifLine(gfxData, width, j * width + offset, override);
             }
         }
         return;
     }
-    for (int h = 0; h < height; ++h) ReadGifLine(gfxData, width, h * width + offset);
+    for (int h = 0; h < height; ++h) ReadGifLine(gfxData, width, h * width + offset, override);
 }
 
 int AddGraphicsFile(const char *filePath)
@@ -312,53 +312,54 @@ int LoadBMPFile(const char *filePath, byte sheetID)
 int LoadGIFFile(const char *filePath, byte sheetID)
 {
     FileInfo info;
+    bool override = Engine.ShouldOverrideFileLoad(filePath);
     if (LoadFile(filePath, &info)) {
         GFXSurface *surface = &gfxSurface[sheetID];
         StrCopy(surface->fileName, filePath);
 
         int fileBuffer = 0;
 
-        SetFilePosition(6); // GIF89a
-        FileRead(&fileBuffer, 1);
+        SetFilePosition(6, override); // GIF89a
+        FileRead(&fileBuffer, 1, override);
         surface->width = fileBuffer;
-        FileRead(&fileBuffer, 1);
+        FileRead(&fileBuffer, 1, override);
         surface->width += (fileBuffer << 8);
-        FileRead(&fileBuffer, 1);
+        FileRead(&fileBuffer, 1, override);
         surface->height = fileBuffer;
-        FileRead(&fileBuffer, 1);
+        FileRead(&fileBuffer, 1, override);
         surface->height += (fileBuffer << 8);
 
-        FileRead(&fileBuffer, 1); // Palette Size
+        FileRead(&fileBuffer, 1, override); // Palette Size
         int has_pallete = (fileBuffer & 0x80) >> 7;
         int colors = ((fileBuffer & 0x70) >> 4) + 1;
         int palette_size = (fileBuffer & 0x7) + 1;
         if (palette_size > 0)
             palette_size = 1 << palette_size;
 
-        FileRead(&fileBuffer, 1); // BG Colour index (thrown away)
-        FileRead(&fileBuffer, 1); // idk actually (still thrown away)
+        FileRead(&fileBuffer, 1, override); // BG Colour index (thrown away)
+        FileRead(&fileBuffer, 1, override); // idk actually (still thrown away)
 
         int c = 0;
         byte clr[3];
         do {
             ++c;
-            FileRead(clr, 3);
+            FileRead(clr, 3, override);
         } while (c != palette_size);
 
-        FileRead(&fileBuffer, 1);
-        while (fileBuffer != ',') FileRead(&fileBuffer, 1); // gif image start identifier
+        FileRead(&fileBuffer, 1, override);
+        while (fileBuffer != ',') FileRead(&fileBuffer, 1, override); // gif image start identifier
 
-        FileRead(&fileBuffer, 2);
-        FileRead(&fileBuffer, 2);
-        FileRead(&fileBuffer, 2);
-        FileRead(&fileBuffer, 2);
-        FileRead(&fileBuffer, 1);
+        FileRead(&fileBuffer, 2, override);
+        FileRead(&fileBuffer, 2, override);
+        FileRead(&fileBuffer, 2, override);
+        FileRead(&fileBuffer, 2, override);
+        FileRead(&fileBuffer, 1, override);
         bool interlaced = (fileBuffer & 0x40) >> 6;
         if (fileBuffer >> 7 == 1) {
             int c = 128;
             do {
                 ++c;
-                FileRead(clr, 3);
+                FileRead(clr, 3, override);
             } while (c != 256);
         }
 
@@ -372,7 +373,7 @@ int LoadGIFFile(const char *filePath, byte sheetID)
 
         gfxDataPosition += surface->width * surface->height;
         if (gfxDataPosition <= 0x3FFFFF)
-            ReadGifPictureData(surface->width, surface->height, interlaced, graphicData, surface->dataPosition);
+            ReadGifPictureData(surface->width, surface->height, interlaced, graphicData, surface->dataPosition, override);
         else
             gfxDataPosition = 0;
 

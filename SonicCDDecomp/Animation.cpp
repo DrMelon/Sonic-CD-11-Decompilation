@@ -15,6 +15,7 @@ int hitboxCount = 0;
 
 void LoadAnimationFile(const char *filePath)
 {
+    printLog("LoadAnimationFile: %s", filePath);
     FileInfo info;
     if (LoadFile(filePath, &info)) {
         int fileBuffer = 0;
