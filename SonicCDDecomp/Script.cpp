@@ -59,7 +59,7 @@ struct FunctionInfo {
     int opcodeSize;
 };
 
-const char variableNames[][0x20] = {
+const char variableNames[][0x21] = {
     "TempValue0",
     "TempValue1",
     "TempValue2",
@@ -289,6 +289,7 @@ const char variableNames[][0x20] = {
     "Engine.TrialMode",
     "KeyPress.AnyStart",
     "Engine.HapticsEnabled",
+    "Snolf.Accumulator",
 };
 
 const FunctionInfo functions[] = { FunctionInfo("End", 0),
@@ -1431,6 +1432,7 @@ void ParseScriptFile(char *scriptName, int scriptID)
     StrAdd(scriptPath, scriptName);
     FileInfo info;
     if (LoadFile(scriptPath, &info)) {
+        printLog("Loaded script.");
         objectScriptList[scriptID].mobile = true; // all parsed scripts will use the updated format, old format support is purely for pc bytecode
         int readMode                      = READMODE_NORMAL;
         int parseMode                     = PARSEMODE_SCOPELESS;
@@ -1636,7 +1638,7 @@ void ParseScriptFile(char *scriptName, int scriptID)
                 default: break;
             }
         }
-
+        printLog("Closing file.");
         CloseFile();
     }
 }
