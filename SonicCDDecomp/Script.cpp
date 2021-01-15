@@ -705,6 +705,7 @@ enum ScrVariable {
     VAR_ENGINETRIALMODE,
     VAR_KEYPRESSANYSTART,
     VAR_ENGINEHAPTICSENABLED,
+    VAR_SNOLFACCUMULATOR,
     VAR_MAX_CNT
 };
 
@@ -2577,6 +2578,7 @@ void ProcessScript(int scriptCodePtr, int jumpTablePtr, byte scriptSub)
                     case VAR_KEYPRESSANYSTART: scriptEng.operands[i] = anyPress; break;
 #if RETRO_USE_HAPTICS
                     case VAR_ENGINEHAPTICSENABLED: scriptEng.operands[i] = Engine.hapticsEnabled; break;
+                    case VAR_SNOLFACCUMULATOR: scriptEng.operands[i] = Engine.snolfAccumulator; break;
 #endif
                 }
             }
@@ -4340,6 +4342,7 @@ void ProcessScript(int scriptCodePtr, int jumpTablePtr, byte scriptSub)
                     case VAR_KEYPRESSANYSTART: break;
 #if RETRO_USE_HAPTICS
                     case VAR_ENGINEHAPTICSENABLED: break;
+                    case VAR_SNOLFACCUMULATOR: Engine.snolfAccumulator = scriptEng.operands[i]; break;
 #endif
                 }
             }

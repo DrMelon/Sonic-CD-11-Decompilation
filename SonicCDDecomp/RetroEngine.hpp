@@ -210,6 +210,8 @@ public:
     bool onlineActive   = true;
     bool hapticsEnabled = true;
 
+    int snolfAccumulator = 0;
+
     int frameSkipSetting = 0;
     int frameSkipTimer   = 0;
 
