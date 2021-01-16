@@ -289,7 +289,18 @@ const char variableNames[][0x21] = {
     "Engine.TrialMode",
     "KeyPress.AnyStart",
     "Engine.HapticsEnabled",
+    "Snolf.MeterX",
+    "Snolf.MeterY",
+    "Snolf.SwingsTaken",
+    "Snolf.ModeState",
+    "Snolf.BarPosX",
+    "Snolf.BarPosY",
+    "Snolf.ResetTimer",
     "Snolf.Accumulator",
+    "Snolf.SwingsTotal",
+    "Snolf.DidJustSwing",
+    "Snolf.ForceAllow",
+    "Snolf.ForceTemp"
 };
 
 const FunctionInfo functions[] = { FunctionInfo("End", 0),
@@ -705,7 +716,18 @@ enum ScrVariable {
     VAR_ENGINETRIALMODE,
     VAR_KEYPRESSANYSTART,
     VAR_ENGINEHAPTICSENABLED,
+    VAR_SNOLFMETERX,
+    VAR_SNOLFMETERY,
+    VAR_SNOLFSWINGSTAKEN,
+    VAR_SNOLFMODESTATE,
+    VAR_SNOLFBARPOSX,
+    VAR_SNOLFBARPOSY,
+    VAR_SNOLFRESETTIMER,
     VAR_SNOLFACCUMULATOR,
+    VAR_SNOLFSWINGSTOTAL,
+    VAR_SNOLFDIDJUSTSWING,
+    VAR_SNOLFFORCEALLOW,
+    VAR_SNOLFFORCETEMP,
     VAR_MAX_CNT
 };
 
@@ -2578,8 +2600,19 @@ void ProcessScript(int scriptCodePtr, int jumpTablePtr, byte scriptSub)
                     case VAR_KEYPRESSANYSTART: scriptEng.operands[i] = anyPress; break;
 #if RETRO_USE_HAPTICS
                     case VAR_ENGINEHAPTICSENABLED: scriptEng.operands[i] = Engine.hapticsEnabled; break;
-                    case VAR_SNOLFACCUMULATOR: scriptEng.operands[i] = Engine.snolfAccumulator; break;
 #endif
+                    case VAR_SNOLFMETERX: scriptEng.operands[i] = Snolf.MeterX; break;
+                    case VAR_SNOLFMETERY: scriptEng.operands[i] = Snolf.MeterY; break;
+                    case VAR_SNOLFSWINGSTAKEN: scriptEng.operands[i] = Snolf.SwingsTaken; break;
+                    case VAR_SNOLFMODESTATE: scriptEng.operands[i] = Snolf.ModeState; break;
+                    case VAR_SNOLFBARPOSX: scriptEng.operands[i] = Snolf.BarPosX; break;
+                    case VAR_SNOLFBARPOSY: scriptEng.operands[i] = Snolf.BarPosY; break;
+                    case VAR_SNOLFRESETTIMER: scriptEng.operands[i] = Snolf.ResetTimer; break;
+                    case VAR_SNOLFACCUMULATOR: scriptEng.operands[i] = Snolf.Accumulator; break;
+                    case VAR_SNOLFSWINGSTOTAL: scriptEng.operands[i] = Snolf.SwingsTotal; break;
+                    case VAR_SNOLFDIDJUSTSWING: scriptEng.operands[i] = Snolf.DidJustSwing; break;
+                    case VAR_SNOLFFORCEALLOW: scriptEng.operands[i] = Snolf.ForceAllow; break;
+                    case VAR_SNOLFFORCETEMP: scriptEng.operands[i] = Snolf.ForceTemp; break;
                 }
             }
             else if (opcodeType == SCRIPTVAR_INTCONST) { // int constant
@@ -4342,8 +4375,19 @@ void ProcessScript(int scriptCodePtr, int jumpTablePtr, byte scriptSub)
                     case VAR_KEYPRESSANYSTART: break;
 #if RETRO_USE_HAPTICS
                     case VAR_ENGINEHAPTICSENABLED: break;
-                    case VAR_SNOLFACCUMULATOR: Engine.snolfAccumulator = scriptEng.operands[i]; break;
 #endif
+                    case VAR_SNOLFMETERX: Snolf.MeterX = scriptEng.operands[i]; break;
+                    case VAR_SNOLFMETERY: Snolf.MeterY = scriptEng.operands[i]; break;
+                    case VAR_SNOLFSWINGSTAKEN: Snolf.SwingsTaken = scriptEng.operands[i]; break;
+                    case VAR_SNOLFMODESTATE: Snolf.ModeState = scriptEng.operands[i]; break;
+                    case VAR_SNOLFBARPOSX: Snolf.BarPosX = scriptEng.operands[i]; break;
+                    case VAR_SNOLFBARPOSY: Snolf.BarPosY = scriptEng.operands[i]; break;
+                    case VAR_SNOLFRESETTIMER: Snolf.ResetTimer = scriptEng.operands[i]; break;
+                    case VAR_SNOLFACCUMULATOR: Snolf.Accumulator = scriptEng.operands[i]; break;
+                    case VAR_SNOLFSWINGSTOTAL: Snolf.SwingsTotal = scriptEng.operands[i]; break;
+                    case VAR_SNOLFDIDJUSTSWING: Snolf.DidJustSwing = scriptEng.operands[i]; break;
+                    case VAR_SNOLFFORCEALLOW: Snolf.ForceAllow = scriptEng.operands[i]; break;
+                    case VAR_SNOLFFORCETEMP: Snolf.ForceTemp = scriptEng.operands[i]; break;
                 }
             }
             else if (opcodeType == SCRIPTVAR_INTCONST) { // int constant

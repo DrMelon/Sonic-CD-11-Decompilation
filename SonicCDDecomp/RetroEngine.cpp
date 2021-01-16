@@ -4,6 +4,7 @@ bool usingCWD = false;
 bool engineDebugMode = false;
 
 RetroEngine Engine = RetroEngine();
+SnolfC Snolf = SnolfC();
 
 inline int getLowerRate(int intendRate, int targetRate)
 {

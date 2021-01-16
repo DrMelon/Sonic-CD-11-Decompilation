@@ -190,6 +190,7 @@ extern bool engineDebugMode;
 #include "Video.hpp"
 #include "Userdata.hpp"
 #include "Debug.hpp"
+#include "Snolf.hpp"
 
 class RetroEngine
 {
@@ -209,8 +210,6 @@ public:
     bool trialMode      = false;
     bool onlineActive   = true;
     bool hapticsEnabled = true;
-
-    int snolfAccumulator = 0;
 
     int frameSkipSetting = 0;
     int frameSkipTimer   = 0;
@@ -289,4 +288,5 @@ public:
 };
 
 extern RetroEngine Engine;
+extern SnolfC Snolf;
 #endif // !RETROENGINE_H

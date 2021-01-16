@@ -204,6 +204,7 @@
     <ClCompile Include="RetroEngine.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="Script.cpp" />
+    <ClCompile Include="Snolf.cpp" />
     <ClCompile Include="Userdata.cpp" />
     <ClCompile Include="Sprite.cpp" />
     <ClCompile Include="String.cpp" />
@@ -223,6 +224,7 @@
     <ClInclude Include="Ini.hpp" />
     <ClInclude Include="Reader.hpp" />
     <ClInclude Include="resource.h" />
+    <ClInclude Include="Snolf.hpp" />
     <ClInclude Include="Sprite.hpp" />
     <ClInclude Include="Input.hpp" />
     <ClInclude Include="Math.hpp" />

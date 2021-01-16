@@ -99,6 +99,9 @@
     <ClInclude Include="..\dependencies\windows\ValveFileVDF\vdf_parser.hpp">
       <Filter>Header Files\vdf_parser</Filter>
     </ClInclude>
+    <ClInclude Include="Snolf.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -168,6 +171,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Scene3D.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Snolf.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
