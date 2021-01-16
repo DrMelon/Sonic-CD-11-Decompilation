@@ -770,28 +770,31 @@ void ProcessAirCollision(Player *player)
         }
 
         if (movingRight == 2) {
-            player->XVelocity     = 0;
-            player->speed         = 0;
+            printLog("Bumped Right");
+            //player->XVelocity     = 0;
+            player->XVelocity = -player->XVelocity / 2; // snolf bounce
+            player->speed         = -player->speed / 2;
             player->XPos          = (sensors[0].XPos - collisionRight) << 16;
             sensors[2].XPos = player->XPos + ((collisionLeft + 1) << 16);
             sensors[3].XPos = player->XPos + ((collisionRight - 2) << 16);
             sensors[4].XPos = sensors[2].XPos;
             sensors[5].XPos = sensors[3].XPos;
-            XVel                   = 0;
-            XVel2                 = 0;
+            XVel                   = -XVel / 2;
+            XVel2                 = -XVel2 / 2;
             movingRight            = 3;
         }
 
         if (movingLeft == 2) {
-            player->XVelocity     = 0;
-            player->speed         = 0;
+            //player->XVelocity     = 0;
+            player->XVelocity = -player->XVelocity / 2; // snolf bounce
+            player->speed         = -player->speed / 2;
             player->XPos          = (sensors[1].XPos - collisionLeft + 1) << 16;
             sensors[2].XPos = player->XPos + ((collisionLeft + 1) << 16);
             sensors[3].XPos = player->XPos + ((collisionRight - 2) << 16);
             sensors[4].XPos = sensors[2].XPos;
             sensors[5].XPos = sensors[3].XPos;
-            XVel                   = 0;
-            XVel2                 = 0;
+            XVel                   = -XVel / 2;
+            XVel2                 = -XVel2 / 2;
             movingLeft             = 3;
         }
 
@@ -2126,7 +2129,7 @@ void BoxCollision(int left, int top, int right, int bottom)
         }
         if (sensors[2].collided || sensors[1].collided || sensors[0].collided) {
             if (!player->gravity && (player->collisionMode == CMODE_RWALL || player->collisionMode == CMODE_LWALL)) {
-                player->XVelocity = 0;
+                player->XVelocity = -player->XVelocity / 2; //snolf
                 player->speed     = 0;
             }
             player->YPos                  = top - (collisionBottom << 16);
@@ -2174,7 +2177,7 @@ void BoxCollision(int left, int top, int right, int bottom)
                     if (player->XVelocity > 0) {
                         if (!player->boundEntity->direction)
                             player->pushing = 2;
-                        player->XVelocity = 0;
+                        player->XVelocity = -player->XVelocity / 2; //snolf
                         player->speed     = 0;
                     }
                     scriptEng.checkResult = 2;
@@ -2198,7 +2201,7 @@ void BoxCollision(int left, int top, int right, int bottom)
                         if (player->XVelocity < 0) {
                             if (player->boundEntity->direction == FLIP_X)
                                 player->pushing = 2;
-                            player->XVelocity = 0;
+                            player->XVelocity = -player->XVelocity / 2; //snolf
                             player->speed     = 0;
                         }
                         scriptEng.checkResult = 3;
@@ -2224,7 +2227,7 @@ void BoxCollision(int left, int top, int right, int bottom)
             if (player->XVelocity > 0) {
                 if (!player->boundEntity->direction)
                     player->pushing = 2;
-                player->XVelocity = 0;
+                player->XVelocity = -player->XVelocity / 2; //snolf
                 player->speed     = 0;
             }
             scriptEng.checkResult = 2;
@@ -2247,7 +2250,7 @@ void BoxCollision(int left, int top, int right, int bottom)
                     if (player->boundEntity->direction == FLIP_X) {
                         player->pushing = 2;
                     }
-                    player->XVelocity = 0;
+                    player->XVelocity = -player->XVelocity / 2; //snolf
                     player->speed     = 0;
                 }
                 scriptEng.checkResult = 3;
@@ -2272,7 +2275,7 @@ void BoxCollision(int left, int top, int right, int bottom)
                 }
                 if (sensors[2].collided || sensors[1].collided || sensors[0].collided) {
                     if (!player->gravity && (player->collisionMode == CMODE_RWALL || player->collisionMode == CMODE_LWALL)) {
-                        player->XVelocity = 0;
+                        player->XVelocity = -player->XVelocity / 2; //snolf
                         player->speed     = 0;
                     }
                     player->YPos                  = top - (collisionBottom << 16);
@@ -2353,7 +2356,7 @@ void BoxCollision2(int left, int top, int right, int bottom)
         }
         if (sensors[2].collided || sensors[1].collided || sensors[0].collided) {
             if (!player->gravity && (player->collisionMode == CMODE_RWALL || player->collisionMode == CMODE_LWALL)) {
-                player->XVelocity = 0;
+                player->XVelocity = -player->XVelocity / 2; //snolf
                 player->speed     = 0;
             }
             player->YPos                  = top - (collisionBottom << 16);
@@ -2404,7 +2407,7 @@ void BoxCollision2(int left, int top, int right, int bottom)
                     if (player->XVelocity > 0) {
                         if (player->boundEntity->direction == FLIP_NONE)
                             player->pushing = 2;
-                        player->XVelocity = 0;
+                        player->XVelocity = -player->XVelocity / 2; //snolf
                         player->speed     = 0;
                     }
                     scriptEng.checkResult = 2;
@@ -2428,7 +2431,7 @@ void BoxCollision2(int left, int top, int right, int bottom)
                         if (player->XVelocity < 0) {
                             if (player->boundEntity->direction == FLIP_X)
                                 player->pushing = 2;
-                            player->XVelocity = 0;
+                            player->XVelocity = -player->XVelocity / 2; //snolf
                             player->speed     = 0;
                         }
                         scriptEng.checkResult = 3;
@@ -2455,7 +2458,7 @@ void BoxCollision2(int left, int top, int right, int bottom)
             if (player->XVelocity > 0) {
                 if (!player->boundEntity->direction)
                     player->pushing = 2;
-                player->XVelocity = 0;
+                player->XVelocity = -player->XVelocity / 2; //snolf
                 player->speed     = 0;
             }
             scriptEng.checkResult = 2;
@@ -2479,7 +2482,7 @@ void BoxCollision2(int left, int top, int right, int bottom)
                     if (player->boundEntity->direction == FLIP_X) {
                         player->pushing = 2;
                     }
-                    player->XVelocity = 0;
+                    player->XVelocity = -player->XVelocity / 2; //snolf
                     player->speed     = 0;
                 }
                 scriptEng.checkResult = 3;
@@ -2504,7 +2507,7 @@ void BoxCollision2(int left, int top, int right, int bottom)
                 }
                 if (sensors[2].collided || sensors[1].collided || sensors[0].collided) {
                     if (!player->gravity && (player->collisionMode == CMODE_RWALL || player->collisionMode == CMODE_LWALL)) {
-                        player->XVelocity = 0;
+                        player->XVelocity = -player->XVelocity / 2; //snolf
                         player->speed     = 0;
                     }
                     player->YPos                  = top - (collisionBottom << 16);
@@ -2572,7 +2575,7 @@ void PlatformCollision(int left, int top, int right, int bottom)
     if (!sensors[0].collided && !sensors[1].collided && !sensors[2].collided)
         return;
     if (!player->gravity && (player->collisionMode == CMODE_RWALL || player->collisionMode == CMODE_LWALL)) {
-        player->XVelocity = 0;
+        player->XVelocity = -player->XVelocity / 2; //snolf
         player->speed     = 0;
     }
     player->YPos                  = top - (collisionBottom << 16);

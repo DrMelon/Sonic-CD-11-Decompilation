@@ -1,0 +1,5 @@
+Notes for my brain for later
+
+1. seems that can control time warp destination with "Warp.Destination" in scripts
+2. line 890 in PlayerObject onward handles dropping out the warp timer
+3. "PlayerObjectCollision" seems to be how objects know when sonic touches them
