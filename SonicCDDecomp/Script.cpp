@@ -1948,6 +1948,10 @@ void ClearScriptData()
     }
 
     SetObjectTypeName((char *)"Blank Object", 0);
+    SetObjectTypeName((char *)"GolfMeterH", 82);
+    ParseScriptFile((char*)"Global/GolfMeterH.txt", 82);
+    SetObjectTypeName((char *)"GolfMeterPip", 83);
+    ParseScriptFile((char*)"Global/GolfMeterPip.txt", 83);
 }
 
 void ProcessScript(int scriptCodePtr, int jumpTablePtr, byte scriptSub)
