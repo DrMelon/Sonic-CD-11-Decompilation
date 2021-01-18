@@ -76,7 +76,21 @@ bool LoadFile(const char *filePath, FileInfo *fileInfo)
 
     cFileHandle = NULL;
 
-    if (Engine.usingDataFile) {
+    bool fileOverride = false;
+
+    std::string filePathStr(filePath);
+    fileOverride |= (filePathStr.find("PlayerStart.txt", 0) != std::string::npos);
+    fileOverride |= (filePathStr.find("ActFinish.txt", 0) != std::string::npos);
+    fileOverride |= (filePathStr.find("StageFinish.txt", 0) != std::string::npos);
+    fileOverride |= (filePathStr.find("HUD.txt", 0) != std::string::npos);
+    fileOverride |= (filePathStr.find("TimeWarp.txt", 0) != std::string::npos);
+    fileOverride |= (filePathStr.find("MetalSonic.txt", 0) != std::string::npos);
+    fileOverride |= (filePathStr.find("StageSetup.txt", 0) != std::string::npos);
+    fileOverride |= (filePathStr.find("GolfMeterH.txt", 0) != std::string::npos);
+    fileOverride |= (filePathStr.find("GolfMeterPip.txt", 0) != std::string::npos);
+
+
+    if (Engine.usingDataFile && !fileOverride) {
         cFileHandle = fOpen(rsdkName, "rb");
         fSeek(cFileHandle, 0, SEEK_END);
         fileSize       = (int)fTell(cFileHandle);
@@ -99,6 +113,9 @@ bool LoadFile(const char *filePath, FileInfo *fileInfo)
         fileInfo->bufferPosition    = bufferPosition;
     }
     else {
+        if (fileOverride) {
+            printLog("Overriding %s with local file.", filePath);
+        }
         cFileHandle = fOpen(fileInfo->fileName, "rb");
         if (!cFileHandle) {
             printLog("Couldn't load file '%s'", filePath);
