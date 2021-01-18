@@ -1,6 +1,5 @@
-Notes for my brain for later
 
-1. seems that can control time warp destination with "Warp.Destination" in scripts
-2. line 890 in PlayerObject onward handles dropping out the warp timer
-3. "PlayerObjectCollision" seems to be how objects know when sonic touches them
-4. can use KeyPress.ButtonA/B/C to get granular controls.
+1. Lock out timetravel when in boss stages
+2. Tidy up HUD
+3. Art edits
+4. Control file overriding for release.
