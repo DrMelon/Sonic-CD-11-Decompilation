@@ -437,7 +437,8 @@ const FunctionInfo functions[] = { FunctionInfo("End", 0),
                              FunctionInfo("SetLeaderboard", 2),
                              FunctionInfo("LoadOnlineMenu", 1),
                              FunctionInfo("EngineCallback", 1),
-                             FunctionInfo("HapticEffect", 4) };
+                             FunctionInfo("HapticEffect", 4),
+                             FunctionInfo("DebugLog", 1) };
 
 AliasInfo aliases[0x80] = { AliasInfo("true", "1"),
                             AliasInfo("false", "0"),
@@ -867,6 +868,7 @@ enum ScrFunction {
     FUNC_LOADONLINEMENU,
     FUNC_ENGINECALLBACK,
     FUNC_HAPTICEFFECT,
+    FUNC_DEBUGLOG,
     FUNC_MAX_CNT
 };
 
@@ -1949,10 +1951,10 @@ void ClearScriptData()
     }
 
     SetObjectTypeName((char *)"Blank Object", 0);
-    SetObjectTypeName((char *)"GolfMeterH", 82);
-    ParseScriptFile((char*)"Global/GolfMeterH.txt", 82);
-    SetObjectTypeName((char *)"GolfMeterPip", 83);
-    ParseScriptFile((char*)"Global/GolfMeterPip.txt", 83);
+    SetObjectTypeName((char *)"GolfMeterH", 253);
+    ParseScriptFile((char*)"Global/GolfMeterH.txt", 253);
+    SetObjectTypeName((char *)"GolfMeterPip", 254);
+    ParseScriptFile((char*)"Global/GolfMeterPip.txt", 254);
 }
 
 void ProcessScript(int scriptCodePtr, int jumpTablePtr, byte scriptSub)
@@ -3779,6 +3781,10 @@ void ProcessScript(int scriptCodePtr, int jumpTablePtr, byte scriptSub)
                 QueueHapticEffect(scriptEng.operands[0]);
                 break;
 #endif
+            case FUNC_DEBUGLOG: 
+                printLog("%s", scriptText);
+                break;
+            
         }
 
         // Set Values

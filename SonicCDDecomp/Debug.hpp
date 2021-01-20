@@ -3,7 +3,7 @@
 
 inline void printLog(const char *msg, ...)
 {
-    if (true) {
+    if (false) {
         char buffer[0x100];
 
         // make the full string
