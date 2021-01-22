@@ -15,7 +15,7 @@ int jumpTableStackPos = 0;
 int functionStackPos  = 0;
 
 ScriptEngine scriptEng = ScriptEngine();
-char scriptText[0x100];
+char scriptText[0x200];
 
 int scriptDataPos       = 0;
 int scriptDataOffset    = 0;
@@ -479,7 +479,7 @@ const char scriptEvaluationTokens[][0x4] = {
 };
 
 int scriptFunctionCount = 0;
-char scriptFunctionNames[FUNCTION_COUNT][0x20];
+char scriptFunctionNames[FUNCTION_COUNT][0xA0];
 
 enum ScriptReadModes { READMODE_NORMAL = 0, READMODE_STRING = 1, READMODE_COMMENTLINE = 2, READMODE_ENDLINE = 3, READMODE_EOF = 4 };
 enum ScriptParseModes { PARSEMODE_SCOPELESS = 0, PARSEMODE_PLATFORMSKIP = 1, PARSEMODE_FUNCTION = 2, PARSEMODE_SWITCHREAD = 3, PARSEMODE_ERROR = 0xFF };
@@ -1024,8 +1024,8 @@ bool ConvertSwitchStatement(char *text)
 }
 void ConvertFunctionText(char *text)
 {
-    char strBuffer[128];
-    char funcName[132];
+    char strBuffer[0xA0];
+    char funcName[0xA0];
     int opcode     = 0;
     int opcodeSize = 0;
     int textPos    = 0;
@@ -1550,7 +1550,7 @@ void ParseScriptFile(char *scriptName, int scriptID)
                     }
                     if (FindStringToken(scriptText, "function", 1)) {
                         if (FindStringToken(scriptText, "function", 1) == 1) {
-                            char funcName[0x20];
+                            char funcName[0xA0];
                             for (textPos = 9; scriptText[textPos]; ++textPos) funcName[textPos - 9] = scriptText[textPos];
                             funcName[textPos - 9] = 0;
                             int funcID             = -1;
@@ -1565,7 +1565,7 @@ void ParseScriptFile(char *scriptName, int scriptID)
                         }
                     }
                     else {
-                        char funcName[0x20];
+                        char funcName[0xA0];
                         for (textPos = 8; scriptText[textPos]; ++textPos) funcName[textPos - 8] = scriptText[textPos];
                         funcName[textPos - 8] = 0;
                         int funcID             = -1;
@@ -3782,7 +3782,7 @@ void ProcessScript(int scriptCodePtr, int jumpTablePtr, byte scriptSub)
                 break;
 #endif
             case FUNC_DEBUGLOG: 
-                printLog("%d:%d: %s", entity->type, objectLoop, scriptText);
+                printLog("%d:%d: %s - %d", entity->type, objectLoop, scriptText, entity->state);
                 break;
             
         }

@@ -3,10 +3,10 @@
 
 #define SCRIPTDATA_COUNT (0x40000)
 #define JUMPTABLE_COUNT (0x4000)
-#define FUNCTION_COUNT (0x200)
+#define FUNCTION_COUNT (0x400)
 
-#define JUMPSTACK_COUNT (0x400)
-#define FUNCSTACK_COUNT (0x400)
+#define JUMPSTACK_COUNT (0x800)
+#define FUNCSTACK_COUNT (0x800)
 
 struct ScriptPtr {
     int scriptCodePtr;
@@ -50,7 +50,7 @@ extern int jumpTableStackPos;
 extern int functionStackPos;
 
 extern ScriptEngine scriptEng;
-extern char scriptText[0x100];
+extern char scriptText[0x200];
 
 extern int scriptDataPos;
 extern int scriptDataOffset;
@@ -58,7 +58,7 @@ extern int jumpTableDataPos;
 extern int jumpTableDataOffset;
 
 extern int scriptFunctionCount;
-extern char scriptFunctionNames[FUNCTION_COUNT][0x20];
+extern char scriptFunctionNames[FUNCTION_COUNT][0xA0];
 
 extern int aliasCount;
 extern int lineID;
