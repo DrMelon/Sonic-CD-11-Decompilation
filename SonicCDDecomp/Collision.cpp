@@ -770,7 +770,6 @@ void ProcessAirCollision(Player *player)
         }
 
         if (movingRight == 2) {
-            printLog("Bumped Right");
             //player->XVelocity     = 0;
             player->XVelocity = -player->XVelocity / 2; // snolf bounce
             player->speed         = -player->speed / 2;

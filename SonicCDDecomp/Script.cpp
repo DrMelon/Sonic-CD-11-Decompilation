@@ -3782,7 +3782,7 @@ void ProcessScript(int scriptCodePtr, int jumpTablePtr, byte scriptSub)
                 break;
 #endif
             case FUNC_DEBUGLOG: 
-                printLog("%s", scriptText);
+                printLog("%d:%d: %s", entity->type, objectLoop, scriptText);
                 break;
             
         }
